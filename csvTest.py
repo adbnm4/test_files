@@ -8,12 +8,9 @@ with open('profiles.csv', 'r') as csv_file:
         # if 'user' in line['user']:
         #     print('yes')
 
-    with open('new_names.csv', 'w') as new_file:
+    with open('profiles.csv', 'a+', newline='') as new_file:
         fieldnames = ['user', 'password']
 
         csv_writer = csv.DictWriter(new_file, fieldnames=fieldnames)
 
-        csv_writer.writeheader()
-
-        for line in csv_reader:
-            csv_writer.writerow(line)
+        csv_writer.writerow({'user': 'user6', 'password': 'password6'})
