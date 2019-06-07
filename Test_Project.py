@@ -128,16 +128,34 @@ class NewUserWindow(tk.Frame):
         # entry into the dictionary
 
         def confirm(event):
+            temp_user = self.user_entry.get()
+            temp_password = self.password_entry.get()
 
-            if self.user_entry.get() in LoginWindow.users.keys():
+            if temp_user in LoginWindow.users.keys():
                 # Check to see if the username is already taken
                 print(f"{self.user_entry.get()} already taken.")
+            elif temp_user == '':
+                print("You didn't enter a username ya ding dong!")
+            elif temp_password == '':
+                print("You didn't enter a password dummy!")
             else:
                 # Add a new dictionary entry for the given input
-                LoginWindow.users[self.user_entry.get()] = self.password_entry.get()
-                print("New profile created successfully")
+                LoginWindow.users[temp_user] = temp_password
 
-        # Create the confirmation button
+                with open('profiles.csv', 'a+', newline='') as new_file:
+                    fieldnames = ['user', 'password']
+
+                    csv_writer = csv.DictWriter(new_file, fieldnames=fieldnames)
+
+                    csv_writer.writerow({'user': temp_user, 'password': temp_password})
+
+                print("New profile created successfully")
+                # Need to add a line containing user entry to the profiles.csv file
+                # and then call the generate_users function from the LoginWindow class
+                # in order to regenerate the dictionary that the program looks at to
+                # verify if a user is in the system or not
+
+        # Create the confirmation buttons
         self.confirm_button = tk.Button(self, text="Confirm")
         self.confirm_button.bind("<Button-1>", confirm)
         self.confirm_button.grid(columnspan=2, row=3)
