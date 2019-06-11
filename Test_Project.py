@@ -6,20 +6,12 @@ import csv
 class LoginWindow(tk.Frame):
     # Create a class called Application w/ parent tk.Frame
 
-    def __init__(self, master=None):
-        super().__init__(master)
-        self.master = master
-        self.pack()
-        self.generate_users()
-        self.create_logo()
-        self.create_entries()
-        self.create_login_button()
-        self.create_newuser_button()
-        # Generate EVERYTHING
+    def __init__(self):
+        tk.Frame.__init__(self)
+        self.root = tk.Tk()
 
-    def generate_users(self):
+        # ***** Generate Users *****
         # Sets basic username/password parameters
-
         # Open csv file that stores user data
         with open('profiles.csv', 'r') as csv_file:
             csv_reader = csv.DictReader(csv_file)
@@ -31,7 +23,7 @@ class LoginWindow(tk.Frame):
                 LoginWindow.users[line['user']] = line['password']
                 # Read csv data into the temporary dictionary
 
-    def create_logo(self):
+        # ***** Create Logo *****
         # Create the logo at the top of the screen
         self.logo = tk.Label(self)
         self.logo["text"] = "Login Application"
@@ -42,7 +34,7 @@ class LoginWindow(tk.Frame):
         # flat, groove, raised, ridge, solid, or sunken
         self.logo.grid(columnspan=2)
 
-    def create_entries(self):
+        # ***** Create Entries *****
         self.user_label = tk.Label(self, text="Username:")
         self.user_label.grid(column=0, row=1)
 
@@ -55,8 +47,7 @@ class LoginWindow(tk.Frame):
         self.password_entry = tk.Entry(self)
         self.password_entry.grid(column=1, row=2)
 
-    def create_login_button(self):
-
+        # ***** Create Login Button *****
         def login(event):
             # Create a login function that checks for user input
 
@@ -72,11 +63,9 @@ class LoginWindow(tk.Frame):
         self.login_button.bind("<Button-1>", login)
         self.login_button.grid(columnspan=2, row=3)
 
-    def create_newuser_button(self):
-
+        # ***** Create New User Button *****
         def newuser(event):
-            root1 = tk.Tk()
-            app1 = NewUserWindow(master=root1)
+            app1 = NewUserWindow()
             app1.mainloop()
 
         self.newuser_button = tk.Button(self, text="New user? Click here.")
@@ -88,13 +77,13 @@ class LoginWindow(tk.Frame):
 class NewUserWindow(tk.Frame):
     # A new window for creating a new user profile
 
-    def __init__(self, master=None):
-        super().__init__(master)
-        self.master = master
-        self.pack()
+    def __init__(self):
+        super().__init__()
+        self.root = tk.Tk()
         self.create_logo()
         self.create_entries()
         self.confirmation_button()
+        self.root.mainloop()
 
     def create_logo(self):
         # Create the logo at the top of the screen
@@ -160,7 +149,5 @@ class NewUserWindow(tk.Frame):
         self.confirm_button.bind("<Button-1>", confirm)
         self.confirm_button.grid(columnspan=2, row=3)
 
-root0 = tk.Tk()
-app0 = LoginWindow(master=root0)
-app0.mainloop()
+app = LoginWindow()
 # Run the program
